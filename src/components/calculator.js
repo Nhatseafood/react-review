@@ -11,6 +11,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'gray',
+    color: 'white',
   },
   valueRow: {
     height: '20%',
@@ -20,26 +22,40 @@ const useStyles = makeStyles({
     justifyContent: 'flex-end',
     alignItems: 'center',
     margin: '4px',
+    color: 'white',
+    backgroundColor: 'black',
   },
   numberRow: {
     height: '20%',
+    // border: '1px solid white',
     width: '100%',
     display: 'flex',
     flexDirection:'row',
     justifyContent: 'space-between',
+    color: 'white',
   },
   regularButton: {
     height: '100%',
     width: '100%',
+    color: 'white',
     // border: '1px solid dark grey'
+  },
+  operatorButton: {
+    height: '100%',
+    width: '100%',
+    color: 'white',
+    backgroundColor: 'orange',
   },
   equalsRow: {
     height: '20%',
     width: '100%',
+    display: 'flex',
+    color: 'white',
   },
   equals: {
     height: '100%',
     width: '100%',
+    color: 'white',
     // border: '1px solid dark grey'
   },
 });
@@ -68,6 +84,18 @@ export default function Calculator() {
     setOperation('subtraction');
   }
 
+  const multiply = () => {
+    setCurrentVal(pendingVal);
+    setPendingVal(null);
+    setOperation('multiply');
+  }
+
+  const division = () => {
+    setCurrentVal(pendingVal);
+    setPendingVal(null);
+    setOperation('division');
+  }
+
   const appendVal = (inputVal) => {
     setPendingVal(pendingVal === null ? inputVal : pendingVal + inputVal); //ternary
   }
@@ -80,6 +108,14 @@ export default function Calculator() {
         break;
       case 'subtraction':
         setCurrentVal(String(Number(currentVal) - Number(pendingVal)));
+        setPendingVal(null);
+        break;
+      case 'multiply':
+        setCurrentVal(String(Number(currentVal) * Number(pendingVal))); 
+        setPendingVal(null);
+        break;
+      case 'division':
+        setCurrentVal(String(Number(currentVal) / Number(pendingVal)));
         setPendingVal(null);
         break;
       default:
@@ -110,6 +146,7 @@ export default function Calculator() {
           onClick={() => appendVal('9')} 
         >9</Button>
         <Button 
+          className={classes.operatorButton}
           onClick={() => clear()}
           variant='outlined'
         >Clear</Button>
@@ -130,7 +167,8 @@ export default function Calculator() {
           variant='outlined'
           onClick={() => appendVal('6')} 
         >6</Button>
-        <Button 
+        <Button
+          className={classes.operatorButton} 
           onClick={() => addition()}
           variant='outlined'
         >+</Button>
@@ -151,16 +189,32 @@ export default function Calculator() {
           variant='outlined'
           onClick={() => appendVal('3')} 
         >3</Button>
-        <Button 
+        <Button
+          className={classes.operatorButton} 
           variant='outlined' 
           onClick={() => subtraction()}
         >-</Button>
       </Grid>
       <Grid className={classes.equalsRow}>
+        <Button
+        className={classes.regularButton}
+        variant='outlined'
+        onClick={() => appendVal('0')}
+        >0</Button>
+        <Button
+        className={classes.operatorButton}
+        variant='outlined'
+        onClick={ () => multiply ()}
+        >*</Button>
         <Button 
+        className={classes.operatorButton}
+        variant='outlined'
+        onClick={ () => division ()}        
+        >/</Button>
+        <Button 
+          className={classes.operatorButton}
           onClick={() => calculate()}
           variant='outlined'
-          className={classes.equals}
         >=</Button>
       </Grid>
     </Grid>
